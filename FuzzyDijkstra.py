@@ -50,19 +50,18 @@ def visualize_graph(graph, distances=None, previous_nodes=None, source=None):
         for neighbor, fuzzy_weight in edges.edges:
             G.add_edge(vertex, neighbor, weight=1)
 
-    pos = nx.spring_layout(G)
-    plt.figure(figsize=(12, 8))
-    nx.draw_networkx_nodes(G, pos, node_size=700, node_color='lightblue')
-    nx.draw_networkx_edges(G, pos, arrowstyle='-|>', arrowsize=20, width=2, edge_color='gray')
+    
+    pos = nx.spring_layout(G, k=2, iterations=100)  
+    plt.figure(figsize=(20, 10))  
+
+    nx.draw_networkx_nodes(G, pos, node_size=500, node_color='lightblue')
+    nx.draw_networkx_edges(G, pos, arrowstyle='-|>', arrowsize=10, width=1, edge_color='gray')
     nx.draw_networkx_labels(G, pos, font_size=10, font_family='sans-serif')
 
     edge_labels = {}
     for vertex in graph.vertices:
         for neighbor, fuzzy_weight in graph.vertices[vertex].edges:
             edge_labels[(vertex, neighbor)] = f"{fuzzy_weight}"
-
-    nx.draw_networkx_edge_labels(G, pos, edge_labels=edge_labels, font_color='red')
-
 
     if distances and previous_nodes and source:
         for vertex in graph.vertices:
@@ -71,7 +70,9 @@ def visualize_graph(graph, distances=None, previous_nodes=None, source=None):
 
         edges = G.edges(data=True)
         colors = ['orange' if 'color' in edge[2] else 'gray' for edge in edges]
-        nx.draw_networkx_edges(G, pos, arrowstyle='-|>', arrowsize=20, width=2, edge_color=colors)
+        nx.draw_networkx_edges(G, pos, arrowstyle='-|>', arrowsize=20, width=1, edge_color=colors)
+
+    nx.draw_networkx_edge_labels(G, pos, edge_labels=edge_labels, font_color='red')
 
     plt.title("Fuzzy SPP using Dijkstra")
     plt.axis('off')
