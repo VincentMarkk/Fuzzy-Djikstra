@@ -11,11 +11,13 @@ class Graph:
 
     def add_edge(self, u, v, fuzzy_weight):
         """Add an edge between two vertices with fuzzy weight."""
+        # u : source, v : destination
         if u not in self.vertices:
             self.add_vertex(u)
         if v not in self.vertices:
             self.add_vertex(v)
-        self.vertices[u].add_edge(v, fuzzy_weight)
+        self.vertices[u].add_edge(v, fuzzy_weight) # directed graph
+        self.vertices[v].add_edge(u, fuzzy_weight) # directed graph
 
     def load_from_json(self, json_string):
         """Load the graph from a JSON string."""

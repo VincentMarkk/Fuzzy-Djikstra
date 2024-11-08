@@ -19,7 +19,6 @@ def reconstruct_path(previous, source, target):
 def run_dijkstra():
     json_data = json_input.get("1.0", tk.END).strip()
     source = source_entry.get().strip()
-
     # Validate JSON input
     try:
         graph = Graph()
@@ -27,23 +26,22 @@ def run_dijkstra():
     except json.JSONDecodeError:
         messagebox.showerror("Error", "Format JSON invalid.")
         return
-
     if source not in graph.vertices:
         messagebox.showerror("Error", f"Node '{source}' tidak terdapat pada graph.")
         return
-
+        
     # Run Fuzzy Dijkstra
     fuzzy_dijkstra = FuzzyDijkstra(graph)
     distances, previous_nodes = fuzzy_dijkstra.fuzzy_dijkstra(source)
 
-    result_text = f"Jarak terpendek dari {source}:\n\n"
+    result_text = f"Jarak/waktu terpendek dari {source}:\n\n"
     for vertex, distance in distances.items():
         path = reconstruct_path(previous_nodes, source, vertex)
         if path: 
             route_str = ' -> '.join(path)  
-            result_text += f"Jarak ke {vertex}: {distance:.2f}, dengan rute {route_str}\n"  
+            result_text += f"Jarak/waktu ke {vertex}: {distance:.2f}, dengan rute {route_str}\n"  
         else:
-            result_text += f"Jarak ke {vertex}: {distance:.2f}, tidak ada rute dari {source} ke {vertex}.\n"
+            result_text += f"Jarak/waktu ke {vertex}: {distance:.2f}, tidak ada rute dari {source} ke {vertex}.\n"
 
     result_display.delete("1.0", tk.END)
     result_display.insert(tk.END, result_text)
